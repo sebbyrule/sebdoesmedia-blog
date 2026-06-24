@@ -86,6 +86,14 @@ Always use `const { slug } = await params;` — do NOT destructure params direct
 - **An incremental cache override is REQUIRED**, even though the site is fully static. `open-next.config.ts` uses the `static-assets-incremental-cache` (serves prerendered pages from the `ASSETS` binding — no R2/KV/D1 needed, read-only/no revalidation). Without an incremental cache, prerendered pages re-render on demand at runtime and crash on `fs.readdir` (`[unenv] fs.readdir is not implemented yet!`). If ISR is ever added, switch to a writable backend (R2/KV/D1) and add its binding in `wrangler.toml`.
 - **`wrangler.toml` is Workers config**, not Pages: `main = ".open-next/worker.js"`, `[assets]` binding `ASSETS`, `compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]`.
 - Local `npm run pages:preview` is unreliable on Windows (OpenNext warns; server function 500s). Verify against a real `*.workers.dev` deploy instead. If a build hits `EPERM` removing `.open-next`, kill stray `workerd` processes first.
+- **Automatic deploys via Cloudflare Workers Builds (Git integration).** The Worker `sebdoesmedia-blog` is connected to `github.com/sebbyrule/sebdoesmedia-blog`; pushes to `main` build + deploy automatically, and branches/PRs get preview versions. Dashboard build settings (Workers & Pages → `sebdoesmedia-blog` → Settings → Builds):
+  - Production branch: `main`
+  - Build command: `npm run pages:build`
+  - Deploy command: `npx opennextjs-cloudflare deploy` (NOT bare `wrangler deploy` — `deploy` also populates the static-assets cache; without it, prerendered pages crash on `fs` at runtime)
+  - Non-production branch deploy command: `npx opennextjs-cloudflare upload`
+  - Build variables: `NEXT_PUBLIC_SITE_URL` must be set here (baked into SSG output at build time: OG tags, canonical URLs, sitemap, RSS)
+  - Node version pinned via `.nvmrc` (22); override with a `NODE_VERSION` build var if needed
+  - CI runs on Linux, so it avoids the Windows OpenNext flakiness. Prefer `git push` over local `npm run pages:deploy` so there's a single source of truth (both target the same Worker).
 
 ### 5. Tailwind CSS v4
 All configuration is in `src/app/globals.css` via `@theme inline {}`. The legacy `tailwind.config.mjs` has been removed. Do NOT re-create it — add theme tokens (colors, fonts, spacing) to the CSS `@theme` block instead.
