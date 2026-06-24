@@ -17,6 +17,13 @@
 /.next/
 /out/
 
+# cloudflare / opennext build output
+/.open-next/
+/.wrangler/
+
+# generated at build time (scripts/generate-og.mjs)
+/public/og/
+
 # production
 /build
 

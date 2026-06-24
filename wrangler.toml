@@ -1,0 +1,19 @@
+name = "sebdoesmedia-blog"
+main = ".open-next/worker.js"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+# Static assets produced by the OpenNext build
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Self-reference used by OpenNext (kept for forward-compat with revalidation).
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "sebdoesmedia-blog"
+
+# No R2/KV/D1 cache binding needed: open-next.config.ts uses the static-assets
+# incremental cache, which serves prerendered pages from the ASSETS binding.
+# If you add ISR later, switch to a writable backend (e.g. R2) and add its
+# binding here.
