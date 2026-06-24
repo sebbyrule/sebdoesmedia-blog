@@ -34,7 +34,11 @@ function iconForLanguage(lang) {
 }
 
 function slugify(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return name
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // split camelCase: AppropriatedKitchen -> Appropriated-Kitchen
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function prettify(name) {

@@ -21,7 +21,7 @@ export const githubProjects: Project[] = [
     "status": "active",
     "stars": 0,
     "language": "TypeScript",
-    "updatedAt": "2026-06-24T19:13:15Z"
+    "updatedAt": "2026-06-24T20:10:14Z"
   },
   {
     "id": "sa3-studio",
@@ -84,7 +84,7 @@ export const githubProjects: Project[] = [
     "updatedAt": "2026-06-19T10:41:01Z"
   },
   {
-    "id": "appropriatedkitchen",
+    "id": "appropriated-kitchen",
     "title": "Appropriated Kitchen",
     "description": "My NextJS cooking blog",
     "longDescription": "My NextJS cooking blog",
@@ -96,7 +96,7 @@ export const githubProjects: Project[] = [
     ],
     "gradient": "from-pink-500 to-pink-600",
     "icon": "monitor",
-    "url": "/projects/appropriatedkitchen",
+    "url": "/projects/appropriated-kitchen",
     "github": "https://github.com/sebbyrule/AppropriatedKitchen",
     "status": "active",
     "stars": 0,
