@@ -56,9 +56,77 @@ function uniq(arr) {
   return [...new Set(arr.filter(Boolean))];
 }
 
-function toProject(repo, index) {
+const GH_HEADERS = {
+  'User-Agent': `${USERNAME}-blog-build`,
+  Accept: 'application/vnd.github+json',
+};
+
+const README_MAX = 16000;
+
+// Light README cleanup: drop HTML comments, rewrite relative image/link URLs to
+// absolute GitHub URLs (so they resolve off-site), and cap the length.
+function cleanReadme(md, repo) {
+  if (!md) return undefined;
+  const owner = repo.owner?.login || USERNAME;
+  const name = repo.name;
+  const branch = repo.default_branch || 'main';
+  const rawBase = `https://raw.githubusercontent.com/${owner}/${name}/${branch}/`;
+  const blobBase = `https://github.com/${owner}/${name}/blob/${branch}/`;
+
+  let out = md.replace(/<!--[\s\S]*?-->/g, '');
+
+  const isAbsolute = (u) => /^(https?:|mailto:|#|\/)/i.test(u);
+  // Markdown images: ![alt](relpath)
+  out = out.replace(/!\[([^\]]*)\]\(([^)\s]+)([^)]*)\)/g, (m, alt, url, rest) =>
+    isAbsolute(url) ? m : `![${alt}](${rawBase}${url.replace(/^\.\//, '')}${rest})`,
+  );
+  // Markdown links: [text](relpath) — but not images (handled above)
+  out = out.replace(/(^|[^!])\[([^\]]+)\]\(([^)\s]+)([^)]*)\)/g, (m, pre, text, url, rest) =>
+    isAbsolute(url) ? m : `${pre}[${text}](${blobBase}${url.replace(/^\.\//, '')}${rest})`,
+  );
+
+  out = out.trim();
+  if (out.length > README_MAX) {
+    out = out.slice(0, README_MAX).replace(/\n[^\n]*$/, '') + '\n\n…';
+  }
+  return out || undefined;
+}
+
+async function fetchReadme(repo) {
+  const owner = repo.owner?.login || USERNAME;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo.name}/readme`, {
+      headers: { ...GH_HEADERS, Accept: 'application/vnd.github.raw+json' },
+    });
+    if (!res.ok) return undefined;
+    return cleanReadme(await res.text(), repo);
+  } catch {
+    return undefined;
+  }
+}
+
+async function fetchLanguages(repo) {
+  const owner = repo.owner?.login || USERNAME;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo.name}/languages`, {
+      headers: GH_HEADERS,
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    // Sort by byte count, most-used first.
+    return Object.entries(data)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name]) => name);
+  } catch {
+    return [];
+  }
+}
+
+async function toProject(repo, index) {
   const language = repo.language || undefined;
   const topics = repo.topics || [];
+  const [readme, languages] = await Promise.all([fetchReadme(repo), fetchLanguages(repo)]);
+  const techStack = languages.length ? languages : uniq([language, ...topics]);
   const tags = topics.length ? topics : uniq([language]);
   return {
     id: slugify(repo.name),
@@ -66,16 +134,21 @@ function toProject(repo, index) {
     description: repo.description || '',
     longDescription: repo.description || '',
     tags,
-    techStack: uniq([language, ...topics]),
+    techStack,
     gradient: GRADIENTS[index % GRADIENTS.length],
     icon: iconForLanguage(language),
     url: `/projects/${slugify(repo.name)}`,
     github: repo.html_url,
     demo: repo.homepage ? repo.homepage : undefined,
+    homepage: repo.homepage || undefined,
     status: repo.archived ? 'archived' : 'active',
     stars: repo.stargazers_count,
+    forks: repo.forks_count,
     language,
+    license: repo.license?.spdx_id && repo.license.spdx_id !== 'NOASSERTION' ? repo.license.spdx_id : undefined,
+    createdAt: repo.created_at,
     updatedAt: repo.pushed_at,
+    readme,
   };
 }
 
@@ -103,10 +176,12 @@ async function main() {
     return;
   }
 
-  const projects = repos
+  const selected = repos
     .filter((r) => !r.fork && !EXCLUDE.has(r.name) && (r.description || '').trim().length > 0)
-    .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at))
-    .map(toProject);
+    .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at));
+
+  // Enrich each repo with its README + language breakdown (2 calls per repo).
+  const projects = await Promise.all(selected.map((repo, i) => toProject(repo, i)));
 
   await writeProjects(projects);
   console.log(`✓ Generated ${projects.length} GitHub projects -> ${path.relative(root, outFile)}`);
