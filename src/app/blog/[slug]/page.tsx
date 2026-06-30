@@ -179,13 +179,6 @@ export default async function BlogPage({ params }: Props) {
             </div>
           )}
 
-          {/* Listen button for article formats */}
-          {post.format === "article" && (
-            <div className="mb-6">
-              <AudioPlayer src="" />
-            </div>
-          )}
-
           <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-pre:bg-muted prose-pre:border prose-img:rounded-xl prose-headings:scroll-mt-20">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}

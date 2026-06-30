@@ -158,8 +158,8 @@ Footer social icons (YouTube, Instagram, X/Twitter) are defined in `src/app/layo
 - Tag colors are defined in `src/components/TagBadge.tsx`. Add a new entry to `tagColors` for each tag that needs a specific color; unknown tags get a neutral style.
 - To list all available tags, use `getAllTags()` from `src/lib/posts.ts`.
 
-### 13. Audio player / TTS
-`src/components/AudioPlayer.tsx` renders a native `<audio>` element if `audio` frontmatter is present. For `article` format posts, it renders a browser speech-synthesis (TTS) "Listen" button that reads the article text. It falls back gracefully if `speechSynthesis` is unavailable.
+### 13. Audio player (podcasts)
+`src/components/AudioPlayer.tsx` renders a native `<audio>` element for posts with `audio` frontmatter (podcast format). It is used only in `src/app/blog/[slug]/page.tsx` for `format === "podcast"`. There is no text-to-speech / speech-synthesis "Listen" feature — it was removed; do NOT re-add browser TTS to article posts.
 
 ### 14. Series navigation
 Multi-part series use `series` (name) + `seriesOrder` (number) frontmatter fields. `src/components/SeriesNav.tsx` renders a numbered progress list on each post in the series. Posts in the same series are ordered by `seriesOrder` ascending.
