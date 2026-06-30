@@ -1,10 +1,15 @@
+// Studio Dusk tag palette — warm, low-saturation, drawn from the brand spectrum
 const tagColors: Record<string, string> = {
   announcement:
-    "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300",
-  tutorial: "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300",
-  tech: "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300",
-  media: "bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300",
-  design: "bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300",
+    "bg-primary/12 text-primary dark:bg-primary/15",
+  tutorial:
+    "bg-[oklch(0.58_0.06_145_/_0.14)] text-[oklch(0.42_0.07_145)] dark:text-[oklch(0.74_0.08_145)]",
+  tech:
+    "bg-accent/12 text-accent dark:bg-accent/18 dark:text-[oklch(0.72_0.11_42)]",
+  media:
+    "bg-[oklch(0.68_0.1_95_/_0.16)] text-[oklch(0.45_0.1_85)] dark:text-[oklch(0.78_0.1_92)]",
+  design:
+    "bg-[oklch(0.5_0.09_350_/_0.14)] text-[oklch(0.45_0.1_350)] dark:text-[oklch(0.74_0.09_350)]",
 };
 
 export function TagBadge({ tag }: { tag: string }) {

@@ -13,13 +13,24 @@ const outDir = path.join(root, 'public/og');
 const width = 1200;
 const height = 630;
 
-async function loadFont(file) {
-  return fs.readFile(path.join(root, 'node_modules/@fontsource/inter/files', file));
+function loadFont(pkg, file) {
+  return fs.readFile(path.join(root, 'node_modules/@fontsource', pkg, 'files', file));
 }
 
+// Studio Dusk palette
+const COLORS = {
+  bg: '#1C1719', // warm aubergine near-black
+  sand: '#EDE3D9', // primary text
+  muted: '#A99A8A', // warm muted text
+  marigold: '#E8A33D', // primary accent
+  tagBg: 'rgba(232, 163, 61, 0.14)',
+};
+
 async function generateOG(post) {
-  const interNormal = await loadFont('inter-latin-400-normal.woff');
-  const interBold = await loadFont('inter-latin-700-normal.woff');
+  const interNormal = await loadFont('inter', 'inter-latin-400-normal.woff');
+  const interMedium = await loadFont('inter', 'inter-latin-500-normal.woff');
+  const serifNormal = await loadFont('dm-serif-display', 'dm-serif-display-latin-400-normal.woff');
+  const serifItalic = await loadFont('dm-serif-display', 'dm-serif-display-latin-400-italic.woff');
 
   const svg = await satori(
     {
@@ -31,10 +42,11 @@ async function generateOG(post) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: 64,
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-          color: '#f8fafc',
+          padding: 72,
+          background: COLORS.bg,
+          color: COLORS.sand,
           fontFamily: 'Inter',
+          borderTop: `10px solid ${COLORS.marigold}`,
         },
         children: [
           {
@@ -43,16 +55,20 @@ async function generateOG(post) {
               style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
               children: [
                 {
-                  type: 'span',
+                  type: 'div',
                   props: {
-                    style: { fontSize: 28, fontWeight: 700, color: '#60a5fa' },
-                    children: 'Sebdoesmedia',
+                    style: { display: 'flex', fontFamily: 'DM Serif Display', fontSize: 32, color: COLORS.sand },
+                    children: [
+                      { type: 'span', props: { children: 'Seb' } },
+                      { type: 'span', props: { style: { fontStyle: 'italic', color: COLORS.marigold }, children: 'does' } },
+                      { type: 'span', props: { children: 'media' } },
+                    ],
                   },
                 },
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: 20, color: '#94a3b8' },
+                    style: { fontSize: 20, color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 2 },
                     children: post.date ? new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '',
                   },
                 },
@@ -67,14 +83,14 @@ async function generateOG(post) {
                 {
                   type: 'h1',
                   props: {
-                    style: { fontSize: 64, fontWeight: 700, lineHeight: 1.1, margin: 0 },
+                    style: { fontFamily: 'DM Serif Display', fontSize: 68, lineHeight: 1.08, letterSpacing: -1, margin: 0, color: COLORS.sand },
                     children: post.title,
                   },
                 },
                 {
                   type: 'p',
                   props: {
-                    style: { fontSize: 28, color: '#cbd5e1', lineHeight: 1.4, margin: 0 },
+                    style: { fontSize: 28, color: COLORS.muted, lineHeight: 1.45, margin: 0 },
                     children: post.excerpt || 'Read more on Sebdoesmedia',
                   },
                 },
@@ -89,8 +105,8 @@ async function generateOG(post) {
                 type: 'span',
                 props: {
                   style: {
-                    background: 'rgba(96, 165, 250, 0.15)',
-                    color: '#60a5fa',
+                    background: COLORS.tagBg,
+                    color: COLORS.marigold,
                     padding: '8px 16px',
                     borderRadius: 9999,
                     fontSize: 20,
@@ -109,7 +125,9 @@ async function generateOG(post) {
       height,
       fonts: [
         { name: 'Inter', data: interNormal, weight: 400, style: 'normal' },
-        { name: 'Inter', data: interBold, weight: 700, style: 'normal' },
+        { name: 'Inter', data: interMedium, weight: 500, style: 'normal' },
+        { name: 'DM Serif Display', data: serifNormal, weight: 400, style: 'normal' },
+        { name: 'DM Serif Display', data: serifItalic, weight: 400, style: 'italic' },
       ],
     },
   );

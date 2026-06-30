@@ -15,7 +15,7 @@ export function BlogPostCard({ post }: { post: Post }) {
     <Link
       key={post.slug}
       href={`/blog/${post.slug}`}
-      className="group block border bg-card rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all duration-200 hover:-translate-y-1"
+      className="group flex flex-col border border-border bg-card rounded-lg overflow-hidden hover:border-primary/60 transition-colors"
     >
       {post.image && (
         <div className="relative w-full h-40 overflow-hidden bg-muted">
@@ -23,14 +23,14 @@ export function BlogPostCard({ post }: { post: Post }) {
             src={post.image}
             alt={post.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       )}
-      <div className="p-5">
-        <div className="flex items-center justify-between gap-2 mb-1">
-          <h3 className="text-lg font-semibold group-hover:text-primary transition-colors line-clamp-2">
+      <div className="p-5 flex flex-col flex-1">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-display text-xl leading-snug group-hover:text-primary transition-colors line-clamp-2">
             {post.title}
           </h3>
           {post.format !== "article" && (
@@ -46,10 +46,10 @@ export function BlogPostCard({ post }: { post: Post }) {
             ))}
           </div>
         )}
-        <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
+        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
           {post.excerpt || "No excerpt available"}
         </p>
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border/60">
           <span>
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",

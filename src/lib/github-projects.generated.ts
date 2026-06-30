@@ -4,44 +4,24 @@ import type { Project } from "./projects";
 
 export const githubProjects: Project[] = [
   {
-    "id": "prompt-playground",
-    "title": "Prompt Playground",
-    "description": "A web based platform to test, version, and auto-improve AI prompts, tools, and agent skills.",
-    "longDescription": "A web based platform to test, version, and auto-improve AI prompts, tools, and agent skills.",
+    "id": "questvault",
+    "title": "Questvault",
+    "description": "A gamified task tracker with LLM and MCP integration",
+    "longDescription": "A gamified task tracker with LLM and MCP integration",
     "tags": [
       "TypeScript"
     ],
     "techStack": [
       "TypeScript"
     ],
-    "gradient": "from-blue-500 to-blue-600",
+    "gradient": "from-amber-500 to-orange-600",
     "icon": "monitor",
-    "url": "/projects/prompt-playground",
-    "github": "https://github.com/sebbyrule/prompt-playground",
+    "url": "/projects/questvault",
+    "github": "https://github.com/sebbyrule/questvault",
     "status": "active",
     "stars": 0,
     "language": "TypeScript",
-    "updatedAt": "2026-06-24T20:10:14Z"
-  },
-  {
-    "id": "sa3-studio",
-    "title": "Sa3 Studio",
-    "description": "A combination of Stable Audio 3 and Demucs to create audio and separate the tracks in one place",
-    "longDescription": "A combination of Stable Audio 3 and Demucs to create audio and separate the tracks in one place",
-    "tags": [
-      "Python"
-    ],
-    "techStack": [
-      "Python"
-    ],
-    "gradient": "from-purple-500 to-purple-600",
-    "icon": "zap",
-    "url": "/projects/sa3-studio",
-    "github": "https://github.com/sebbyrule/sa3-studio",
-    "status": "active",
-    "stars": 0,
-    "language": "Python",
-    "updatedAt": "2026-06-24T18:22:35Z"
+    "updatedAt": "2026-06-29T04:10:11Z"
   },
   {
     "id": "agentkernal",
@@ -54,34 +34,54 @@ export const githubProjects: Project[] = [
     "techStack": [
       "Python"
     ],
-    "gradient": "from-orange-500 to-orange-600",
+    "gradient": "from-orange-600 to-rose-700",
     "icon": "zap",
     "url": "/projects/agentkernal",
     "github": "https://github.com/sebbyrule/agentkernal",
     "status": "active",
     "stars": 0,
     "language": "Python",
-    "updatedAt": "2026-06-21T02:12:09Z"
+    "updatedAt": "2026-06-25T18:05:06Z"
   },
   {
-    "id": "questvault",
-    "title": "Questvault",
-    "description": "A gamified task tracker with LLM and MCP integration",
-    "longDescription": "A gamified task tracker with LLM and MCP integration",
+    "id": "prompt-playground",
+    "title": "Prompt Playground",
+    "description": "A web based platform to test, version, and auto-improve AI prompts, tools, and agent skills.",
+    "longDescription": "A web based platform to test, version, and auto-improve AI prompts, tools, and agent skills.",
     "tags": [
       "TypeScript"
     ],
     "techStack": [
       "TypeScript"
     ],
-    "gradient": "from-green-500 to-green-600",
+    "gradient": "from-yellow-500 to-amber-600",
     "icon": "monitor",
-    "url": "/projects/questvault",
-    "github": "https://github.com/sebbyrule/questvault",
+    "url": "/projects/prompt-playground",
+    "github": "https://github.com/sebbyrule/prompt-playground",
     "status": "active",
     "stars": 0,
     "language": "TypeScript",
-    "updatedAt": "2026-06-19T10:41:01Z"
+    "updatedAt": "2026-06-25T11:43:34Z"
+  },
+  {
+    "id": "sa3-studio",
+    "title": "Sa3 Studio",
+    "description": "A combination of Stable Audio 3 and Demucs to create audio and separate the tracks in one place",
+    "longDescription": "A combination of Stable Audio 3 and Demucs to create audio and separate the tracks in one place",
+    "tags": [
+      "Python"
+    ],
+    "techStack": [
+      "Python"
+    ],
+    "gradient": "from-stone-500 to-stone-700",
+    "icon": "zap",
+    "url": "/projects/sa3-studio",
+    "github": "https://github.com/sebbyrule/sa3-studio",
+    "status": "active",
+    "stars": 0,
+    "language": "Python",
+    "updatedAt": "2026-06-24T18:22:35Z"
   },
   {
     "id": "appropriated-kitchen",
@@ -94,7 +94,7 @@ export const githubProjects: Project[] = [
     "techStack": [
       "TypeScript"
     ],
-    "gradient": "from-pink-500 to-pink-600",
+    "gradient": "from-rose-500 to-orange-700",
     "icon": "monitor",
     "url": "/projects/appropriated-kitchen",
     "github": "https://github.com/sebbyrule/AppropriatedKitchen",
@@ -114,7 +114,7 @@ export const githubProjects: Project[] = [
     "techStack": [
       "HTML"
     ],
-    "gradient": "from-cyan-500 to-cyan-600",
+    "gradient": "from-lime-600 to-emerald-700",
     "icon": "monitor",
     "url": "/projects/pi-wiki",
     "github": "https://github.com/sebbyrule/Pi-Wiki",

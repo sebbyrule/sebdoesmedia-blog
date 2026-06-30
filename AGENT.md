@@ -9,7 +9,7 @@ A blog platform hosted on **Cloudflare Pages** using the **Open Next Cloudflare*
 | Framework | Next.js (App Router) | 16.2.9 |
 | UI Components | shadcn/ui (Radix Luma style) | via components.json |
 | Styling | Tailwind CSS v4 + @tailwindcss/typography | via globals.css @theme |
-| Fonts | Geist + Inter (next/font) | - |
+| Fonts | DM Serif Display (headings) + DM Sans (body) + Geist Mono (code), via next/font | - |
 | Icons | Lucide React | ^1.18.0 |
 | Content | Markdown (gray-matter + react-markdown + remark-gfm) | ^4.0.3 / ^10.1.1 |
 | Search | Fuse.js client-side search | ^7.4.2 |
@@ -99,6 +99,7 @@ Always use `const { slug } = await params;` — do NOT destructure params direct
 All configuration is in `src/app/globals.css` via `@theme inline {}`. The legacy `tailwind.config.mjs` has been removed. Do NOT re-create it — add theme tokens (colors, fonts, spacing) to the CSS `@theme` block instead.
 - The `@tailwindcss/typography` plugin is added via `@plugin "@tailwindcss/typography";` in CSS.
 - Use `prose prose-slate dark:prose-invert` for markdown content styling.
+- **Brand: "Studio Dusk".** Palette is warm — parchment/aubergine grounds, **marigold** `--primary` (oklch ~0.78 0.13 72) and **clay rose** `--accent`. No indigo/violet, no gradient-clipped text, no grid-mesh hero. Headings use `var(--font-heading)` (DM Serif Display) automatically via a base rule; for large display type add the `.font-display` helper class (defined in globals.css). Tag colors live in `src/components/TagBadge.tsx` and draw from this warm spectrum.
 
 ### 6. shadcn/ui — Radix Luma style
 Components use the new `displayName`-free pattern with `data-slot` attributes. If adding new shadcn components, run `npx shadcn@latest add <component>` from the project root. Do NOT use the old `forwardRef` + `displayName` pattern — it's been replaced by the Luma style.
@@ -146,7 +147,7 @@ excerpt: "..."
 Projects are **generated at build time from public GitHub repos** by `scripts/fetch-github-projects.mjs` (runs in `prebuild` / `pages:build`). It fetches `https://api.github.com/users/<USERNAME>/repos` (unauthenticated — no token, public repos only), maps each repo to the `Project` shape, and writes `src/lib/github-projects.generated.ts` (committed, so builds work even if GitHub is unreachable). `src/lib/projects.ts` re-exports that array and defines the `Project` type: `id`, `title`, `description`, `longDescription`, `tags`, `techStack`, `gradient`, `icon` (monitor/zap/tools), `url`, optional `github`/`demo`, `status` (active/planned/archived), plus GitHub metadata `stars`/`language`/`updatedAt`. Repos are filtered to non-forks with a description, minus an `EXCLUDE` set (the site repos) defined in the script. To change which repos appear, edit `USERNAME`/`EXCLUDE` in the script — do NOT hand-edit `github-projects.generated.ts` (it's overwritten each build). Projects automatically appear on the homepage, projects page, sitemap, and detail pages. `id` is a lowercased slug of the repo name (camelCase repos like `AppropriatedKitchen` → `appropriatedkitchen`).
 
 ### 10. Dynamic OG images
-Per-post OG share cards are generated at build time by `scripts/generate-og.mjs` (uses `satori` + `@resvg/resvg-js`) and written to `public/og/[slug].png`. The script runs automatically via `npm run prebuild` before `next build`. Each `/blog/[slug]` page references its generated image in `openGraph.images`.
+Per-post OG share cards are generated at build time by `scripts/generate-og.mjs` (uses `satori` + `@resvg/resvg-js`) and written to `public/og/[slug].png`. The script runs automatically via `npm run prebuild` before `next build`. Each `/blog/[slug]` page references its generated image in `openGraph.images`. Cards use the Studio Dusk palette (aubergine ground, marigold accent) with fonts loaded from local `@fontsource` packages — **DM Serif Display** (`@fontsource/dm-serif-display`) for the wordmark/title and **Inter** (`@fontsource/inter`) for meta/excerpt. Both must stay installed for the build to succeed.
 
 ### 11. Social links in footer
 Footer social icons (YouTube, Instagram, X/Twitter) are defined in `src/app/layout.tsx` in the `socialLinks` array. Update the `href` values when real URLs are available.

@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { DM_Serif_Display, DM_Sans, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SearchBar } from "@/components/SearchBar";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+// Studio Dusk type system: DM Serif Display (headings) + DM Sans (body)
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -53,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={cn("h-full antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
+      className={cn("h-full antialiased", dmSerif.variable, geistMono.variable, "font-sans", dmSans.variable)}
       suppressHydrationWarning
     >
       <head>
@@ -72,19 +78,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }} />
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
-        <header className="border-b bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-border/70 bg-background/85 backdrop-blur-md sticky top-0 z-50">
           <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Sebdoesmedia
+            <Link href="/" className="font-display text-2xl text-foreground tracking-tight">
+              Seb<span className="italic text-primary">does</span>media
             </Link>
             <nav className="flex items-center gap-6">
-              <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">Home</Link>
-              <Link href="/blog" className="text-sm font-medium transition-colors hover:text-primary">Posts</Link>
-              <Link href="/archive" className="text-sm font-medium transition-colors hover:text-primary">Archive</Link>
-              <Link href="/projects" className="text-sm font-medium transition-colors hover:text-primary">Projects</Link>
-              <Link href="/now" className="text-sm font-medium transition-colors hover:text-primary">Now</Link>
-              <Link href="/about" className="text-sm font-medium transition-colors hover:text-primary">About</Link>
-              <div className="relative flex items-center gap-2">
+              <Link href="/" className="text-sm text-muted-foreground transition-colors hover:text-primary">Home</Link>
+              <Link href="/blog" className="text-sm text-muted-foreground transition-colors hover:text-primary">Posts</Link>
+              <Link href="/archive" className="text-sm text-muted-foreground transition-colors hover:text-primary">Archive</Link>
+              <Link href="/projects" className="text-sm text-muted-foreground transition-colors hover:text-primary">Projects</Link>
+              <Link href="/now" className="text-sm text-muted-foreground transition-colors hover:text-primary">Now</Link>
+              <Link href="/about" className="text-sm text-muted-foreground transition-colors hover:text-primary">About</Link>
+              <div className="relative flex items-center gap-2 pl-1">
                 <SearchBar />
                 <ThemeToggle />
               </div>
@@ -96,8 +102,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        <footer className="border-t py-8 mt-auto bg-muted/50">
+        <footer className="border-t border-border/70 py-12 mt-auto bg-secondary/40">
           <div className="container mx-auto px-4 grid gap-6">
+            <div className="text-center">
+              <Link href="/" className="font-display text-xl text-foreground tracking-tight">
+                Seb<span className="italic text-primary">does</span>media
+              </Link>
+            </div>
             <div className="flex justify-center gap-6">
               {socialLinks.map((link) => (
                 <a
@@ -113,7 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               ))}
             </div>
             <div className="text-center text-muted-foreground text-sm">
-              <p>© {new Date().getFullYear()} Sebdoesmedia. Powered by Next.js & Cloudflare.</p>
+              <p>© {new Date().getFullYear()} Sebdoesmedia — media &amp; technology, from the studio.</p>
             </div>
           </div>
         </footer>

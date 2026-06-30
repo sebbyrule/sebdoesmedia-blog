@@ -15,16 +15,17 @@ const USERNAME = 'sebbyrule';
 // Repos to never show as projects (the site itself, etc.).
 const EXCLUDE = new Set(['sebdoesmedia', 'sebdoesmedia-blog']);
 
-// Gradient palette + deterministic assignment (matches the existing card style).
+// Gradient palette + deterministic assignment.
+// Studio Dusk: warm marigold/clay/amber/sage tones — no stock blue/purple.
 const GRADIENTS = [
-  'from-blue-500 to-blue-600',
-  'from-purple-500 to-purple-600',
-  'from-orange-500 to-orange-600',
-  'from-green-500 to-green-600',
-  'from-pink-500 to-pink-600',
-  'from-cyan-500 to-cyan-600',
-  'from-red-500 to-red-600',
-  'from-indigo-500 to-indigo-600',
+  'from-amber-500 to-orange-600',
+  'from-orange-600 to-rose-700',
+  'from-yellow-500 to-amber-600',
+  'from-stone-500 to-stone-700',
+  'from-rose-500 to-orange-700',
+  'from-lime-600 to-emerald-700',
+  'from-amber-600 to-yellow-700',
+  'from-red-600 to-amber-700',
 ];
 
 function iconForLanguage(lang) {

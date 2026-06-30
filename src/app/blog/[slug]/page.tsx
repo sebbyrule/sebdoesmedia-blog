@@ -92,7 +92,7 @@ export default async function BlogPage({ params }: Props) {
           )}
 
           <header className="mb-8 pb-6 border-b">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            <h1 className="font-display text-4xl md:text-5xl leading-[1.08] tracking-tight mb-4 text-foreground">
               {post.title}
             </h1>
 
